@@ -1,0 +1,310 @@
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import net.fabricmc.loom.configuration.ide.RunConfigSettings
+import org.jetbrains.annotations.Contract
+
+plugins {
+    id("com.gradleup.shadow")
+}
+
+val MOD_ID: String = rootProject.property("mod_id").toString()
+val otelVersion: String = rootProject.property("otel_version") as String
+//val relocatePrefix = rootProject.property("relocate_prefix") as String
+
+repositories {
+    maven {
+        url = uri("https://maven.quiltmc.org/repository/release/")
+    }
+}
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+loom {
+    accessWidenerPath.set(project(":common").loom.accessWidenerPath)
+    runs {
+        named<RunConfigSettings>("server") {
+            vmArg(
+                "-javaagent:${
+                    rootProject.layout.buildDirectory.file("downloadOTelAgent/opentelemetry-javaagent.jar")
+                        .get().asFile.absolutePath
+                }"
+            )
+            environmentVariable(
+                "OTEL_JAVAAGENT_CONFIGURATION_FILE",
+                rootProject.layout.projectDirectory.file("dev.otel.properties")
+            )
+            runDir = "serverRun"
+        }
+        named<RunConfigSettings>("client") {
+            vmArg(
+                "-javaagent:${
+                    rootProject.layout.buildDirectory.file("downloadOTelAgent/opentelemetry-javaagent.jar")
+                        .get().asFile.absolutePath
+                }"
+            )
+            environmentVariable(
+                "OTEL_JAVAAGENT_CONFIGURATION_FILE",
+                rootProject.layout.projectDirectory.file("dev.otel.properties")
+            )
+        }
+        create("clientWithDocker", Action<RunConfigSettings> {
+            client()
+            inherit(this@runs["client"])
+            configName = "Minecraft Client + Docker"
+            environmentVariable(
+                "OTEL_JAVAAGENT_CONFIGURATION_FILE",
+                rootProject.layout.projectDirectory.file("docker.otel.properties")
+            )
+        })
+        /*create("clientGameTest", Action<RunConfigSettings> {
+            client()
+            inherit(this@runs["client"])
+            configName = "Minecraft Client + GameTest"
+            source("gametest")
+        })
+        create("clientGameTestWithDocker", Action<RunConfigSettings> {
+            client()
+            inherit(this@runs["clientWithDocker"])
+            configName = "Minecraft Client + GameTest + Docker"
+            source("gametest")
+        })
+        create("gameTestServer", Action<RunConfigSettings> {
+            server()
+
+            source("gametest")
+
+            vmArg(
+                "-javaagent:${
+                    rootProject.layout.buildDirectory.file("downloadOTelAgent/opentelemetry-javaagent.jar")
+                        .get().asFile.absolutePath
+                }"
+            )
+            environmentVariable(
+                "OTEL_JAVAAGENT_CONFIGURATION_FILE",
+                rootProject.layout.projectDirectory.file("gameTest.otel.properties")
+            )
+
+            this.property("fabric-api.gametest")
+            runDir = "gameTestRun"
+        })*/
+    }
+}
+
+//tasks["check"].dependsOn("runGameTestServer")
+
+sourceSets {
+    val main by getting
+    /*val commonGameTest = project(":common").sourceSets["gametest"]
+
+    val gametest by creating {
+        compileClasspath += commonGameTest.output + commonGameTest.compileClasspath + main.output + main.compileClasspath
+        val pathSep = File.separator
+        val blacklistedSepName = "${pathSep}fabric${pathSep}build${pathSep}resources${pathSep}main"
+        runtimeClasspath += commonGameTest.output + /*commonGameTest.runtimeClasspath +*/ (main.output + main.runtimeClasspath).filter {
+            !(it.path.endsWith("\\fabric\\build\\resources\\main") || it.path.endsWith(blacklistedSepName))
+        }
+    }*/
+}
+
+val common: Configuration by configurations.creating {
+    this.isCanBeResolved = true
+    this.isCanBeConsumed = false
+}
+val shadowBundle: Configuration by configurations.creating {
+    this.isCanBeResolved = true
+    this.isCanBeConsumed = false
+}
+val developmentFabric: Configuration by configurations.getting
+
+configurations {
+    compileClasspath.configure { extendsFrom(common) }
+    runtimeClasspath.configure { extendsFrom(common) }
+    developmentFabric.extendsFrom(common)
+}
+
+dependencies {
+    modImplementation("net.fabricmc:fabric-loader:${rootProject.property("fabric_loader_version")}")
+    modApi("net.fabricmc.fabric-api:fabric-api:${rootProject.property("fabric_api_version")}")
+    // Remove the next line if you don't want to depend on the API
+    modApi("dev.architectury:architectury-fabric:${rootProject.property("architectury_version")}")
+
+    common(project(":common", "namedElements")) {
+        isTransitive = false
+    }
+    shadowBundle(project(":common", "transformProductionFabric")) {
+        isTransitive = false
+    }
+
+    // Fabric Kotlin
+    modImplementation("net.fabricmc:fabric-language-kotlin:${rootProject.property("fabric_kotlin_version")}")
+    include(modImplementation("teamreborn:energy:4.1.0")!!)
+
+    // owo-lib/oωo-lib
+    modRuntimeOnly("io.wispforest:owo-lib:${rootProject.property("owo_fabric_version")}")
+    include("io.wispforest:owo-sentinel:${rootProject.property("owo_fabric_version")}")
+
+    // opentelemetry
+    compileOnly("io.opentelemetry:opentelemetry-api:${rootProject.property("otel_version")}")
+
+    modImplementation("de.mctelemetry:mc-telemetry-core+fabric:${rootProject.property("mcotelcore_version_slug")}")
+}
+
+tasks.named("configureLaunch") {
+    dependsOn(rootProject.tasks.named("verifyOTelAgent"))
+}
+
+tasks.processResources {
+    val expansionMap = mapOf(
+        "group" to rootProject.property("maven_group"),
+        "version" to project.version,
+
+        "mod_id" to rootProject.property("mod_id"),
+        "minecraft_version" to rootProject.property("minecraft_version"),
+        "architectury_version" to rootProject.property("architectury_version"),
+        "fabric_kotlin_version" to rootProject.property("fabric_kotlin_version"),
+        "mcotelcore_version_slug" to rootProject.property("mcotelcore_version_slug"),
+        "mcotelcore_version_raw" to rootProject.property("mcotelcore_version_raw"),
+    )
+    inputs.properties(expansionMap)
+
+    filesMatching("fabric.mod.json") {
+        expand(expansionMap)
+    }
+}
+
+tasks.shadowJar {
+    exclude("architectury.common.json")
+    configurations = listOf(shadowBundle)
+    dependencies {
+        exclude {
+            it.moduleGroup == "org.jetbrains.kotlin"
+                    && it.moduleName.startsWith("kotlin-stdlib")
+        }
+        exclude {
+            it.moduleGroup == "org.jetbrains"
+                    && it.moduleName.startsWith("annotation")
+        }
+    }
+    archiveClassifier.set("dev-shadow")
+}
+
+tasks.remapJar {
+    injectAccessWidener.set(true)
+    inputFile.set(tasks.shadowJar.get().archiveFile)
+    dependsOn(tasks.shadowJar)
+    archiveClassifier.set(null as String?)
+}
+
+tasks.jar {
+    archiveClassifier.set("dev")
+}
+
+tasks.sourcesJar {
+    val commonSources = project(":common").tasks.getByName<Jar>("sourcesJar")
+    dependsOn(commonSources)
+    from(commonSources.archiveFile.map { zipTree(it) })
+    filesMatching("mcotelcompat.accesswidener") {
+        this.duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
+
+components.getByName("java") {
+    this as AdhocComponentWithVariants
+    this.withVariantsFromConfiguration(project.configurations["shadowRuntimeElements"]) {
+        skip()
+    }
+}
+
+/*tasks.register("configureGameTestServer") {
+    val serverProperties = mapOf(
+        "enable-command-block" to "true",
+        "level-type" to "minecraft:flat",
+    )
+    inputs.properties(serverProperties)
+    val gameTestServerRun = loom.runs["gameTestServer"]
+    val serverPropertiesFile =
+        file(Paths.get(gameTestServerRun.runDir, "server.properties"), validation = PathValidation.NONE)
+    onlyIf { !serverPropertiesFile.exists() }
+    doLast {
+        gameTestServerRun.makeRunDir()
+    }
+    doLast {
+        val properties = Properties(serverProperties.size).apply {
+            serverProperties.forEach(::setProperty)
+        }
+        serverPropertiesFile.writer(Charsets.UTF_8).use {
+            properties.store(it, null)
+        }
+    }
+    tasks["runGameTestServer"].dependsOn(this)
+}*/
+
+tasks.processResources {
+    val commonProcessResources = project(":common").tasks.processResources.get()
+    dependsOn(commonProcessResources)
+    inputs.dir(commonProcessResources.destinationDir)
+    from(commonProcessResources.destinationDir)
+}
+
+/*tasks.named<ProcessResources>("processGametestResources") {
+    val resourcesTask = tasks.processResources.get()
+    val commonGameTestResourcesTask = project(":common").tasks.getByName<ProcessResources>("processGametestResources")
+    dependsOn(resourcesTask, commonGameTestResourcesTask)
+    val fabricModJsonFileMainPath = resourcesTask.destinationDir.toPath() / "fabric.mod.json"
+    val fabricModJsonPartialFileGameTestPath = destinationDir.toPath() / "fabric.mod.partial.json"
+    val fabricModJsonFileGameTestPath = destinationDir.toPath() / "fabric.mod.json"
+    inputs.dir(commonGameTestResourcesTask.destinationDir)
+    from(commonGameTestResourcesTask.destinationDir)
+    inputs.dir(resourcesTask.destinationDir)
+    from(resourcesTask.destinationDir)
+    doLast {
+        val gson =
+            GsonBuilder().serializeNulls().disableHtmlEscaping().setFormattingStyle(FormattingStyle.PRETTY).create()
+        val base = file(fabricModJsonFileMainPath).reader(Charsets.UTF_8).use { reader ->
+            gson.fromJson(reader, JsonElement::class.java)
+        }
+        val override = file(fabricModJsonPartialFileGameTestPath).reader(Charsets.UTF_8).use { reader ->
+            gson.fromJson(reader, JsonElement::class.java)
+        }
+        file(fabricModJsonFileGameTestPath).writer(Charsets.UTF_8).use { writer ->
+            gson.toJson(mergeJson(base, override)!!, writer)
+        }
+    }
+}*/
+
+@Contract("null,null,_->null; !null,_,_->!null; _,!null,_->!null")
+fun mergeJson(base: JsonElement?, override: JsonElement?, path: String = "[root]"): JsonElement? {
+    if (base == null) return override
+    if (override == null) return base
+    return if (base.isJsonObject && override.isJsonObject) {
+        mergeJsonObjects(base.asJsonObject, override.asJsonObject, path)
+    } else if (base.isJsonArray && base.isJsonArray) {
+        mergeJsonArrays(base.asJsonArray, override.asJsonArray)
+    } else {
+        throw IllegalArgumentException("Cannot merge $base and $override at $path")
+    }
+}
+
+private fun mergeJsonArrays(base: JsonArray, override: JsonArray): JsonArray {
+    val result = JsonArray(base.size() + override.size())
+    result.addAll(base)
+    result.addAll(override)
+    return result
+}
+
+private fun mergeJsonObjects(base: JsonObject, override: JsonObject, path: String): JsonObject {
+    val result = JsonObject()
+    val resultMap = result.asMap() // mutable view which syncs changes to underlying JsonObject
+    resultMap.putAll(base.asMap())
+    for ((key, value) in override.entrySet()) {
+        resultMap.merge(key, value) { baseValue, overrideValue ->
+            mergeJson(baseValue, overrideValue, "$path.$key")
+                ?: throw NullPointerException("mergeJson returned null for merging of $baseValue and $overrideValue at $path.$key")
+        }
+    }
+    return result
+}

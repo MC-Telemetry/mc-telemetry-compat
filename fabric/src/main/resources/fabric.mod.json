@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "MC Telemetry Compat",
+  "description": "",
+  "authors": [
+    "Zincfox",
+    "pixix4"
+  ],
+  "contact": {
+    "homepage": "https://mctelemetry.de/",
+    "sources": "https://github.com/MC-Telemetry/mc-telemetry-compat"
+  },
+  "license": "MIT",
+  "icon": "assets/mcotelcompat/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "de.mctelemetry.compat.fabric.OTelCompatModFabric"
+      }
+    ]
+  },
+  "mixins": [
+    "mcotelcompat.mixins.json"
+  ],
+  "accessWidener": "mcotelcompat.accesswidener",
+  "depends": {
+    "fabric-api": "*",
+    "java": ">=21",
+    "minecraft": "${minecraft_version}",
+    "architectury": ">=${architectury_version}",
+    "fabric-language-kotlin": ">=${fabric_kotlin_version}",
+    "mcotelcore": "${mcotelcore_version_raw}"
+  },
+  "custom": {
+    "mc-publish": {
+      "dependencies": [
+        "fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}",
+        "architectury@${architectury_version}(required){modrinth:lhGA9TYQ}{curseforge:419699}",
+        "fabric-language-kotlin@${}(required){modrinth:Ha28R6CL}{curseforge:308769}",
+        "mcotelcore@${mcotelcore_version_slug}(required){modrinth:vSaayyqb}{curseforge:1424812}"
+      ]
+    }
+  }
+}

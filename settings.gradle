@@ -1,0 +1,22 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        maven { url = "https://maven.fabricmc.net/" }
+        maven { url = "https://maven.architectury.dev/" }
+        maven { url = "https://maven.minecraftforge.net/" }
+        gradlePluginPortal()
+    }
+}
+
+include("common")
+include("fabric")
+include("neoforge")
+includeBuild("../mc-telemetry-core") { build ->
+    build.dependencySubstitution { substitutions ->
+        substitute module("de.mctelemetry:mc-telemetry-core") using project(":common")
+        substitute module("de.mctelemetry:mc-telemetry-core+neoforge") using project(":neoforge")
+        substitute module("de.mctelemetry:mc-telemetry-core+fabric") using project(":fabric")
+    }
+}
+
+rootProject.name = "mc-telemetry-compat"
