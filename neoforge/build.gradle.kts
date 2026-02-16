@@ -115,16 +115,16 @@ loom {
 
 sourceSets {
     val main by getting
-/*    val commonGameTest = project(":common").sourceSets["gametest"]
+    /*    val commonGameTest = project(":common").sourceSets["gametest"]
 
-    val gametest by creating {
-        compileClasspath += commonGameTest.output + commonGameTest.compileClasspath + main.output + main.compileClasspath
-        val pathSep = File.separator
-        val blacklistedSepName = "${pathSep}neoforge${pathSep}build${pathSep}resources${pathSep}main"
-        runtimeClasspath += commonGameTest.output + /*commonGameTest.runtimeClasspath +*/ (main.output + main.runtimeClasspath).filter {
-            !(it.path.endsWith("\\neoforge\\build\\resources\\main") || it.path.endsWith(blacklistedSepName))
-        }
-    }*/
+        val gametest by creating {
+            compileClasspath += commonGameTest.output + commonGameTest.compileClasspath + main.output + main.compileClasspath
+            val pathSep = File.separator
+            val blacklistedSepName = "${pathSep}neoforge${pathSep}build${pathSep}resources${pathSep}main"
+            runtimeClasspath += commonGameTest.output + /*commonGameTest.runtimeClasspath +*/ (main.output + main.runtimeClasspath).filter {
+                !(it.path.endsWith("\\neoforge\\build\\resources\\main") || it.path.endsWith(blacklistedSepName))
+            }
+        }*/
 }
 
 val common: Configuration by configurations.creating {
@@ -187,9 +187,12 @@ dependencies {
     // opentelemetry
     compileOnly("io.opentelemetry:opentelemetry-api:${rootProject.property("otel_version")}")
 
-    modImplementation("de.mctelemetry:mc-telemetry-core+neoforge:${rootProject.property("mcotelcore_version_slug")}") {
+    modImplementation("curse.maven:mc-telemetry-core-1424812:${rootProject.property("mcotelcore_neoforge_version")}") {
         isTransitive = false
     }
+    modImplementation("curse.maven:draconic-evolution-223565:${rootProject.property("draconic_evolution_neoforge_version")}")
+    modImplementation("curse.maven:brandons-core-231382:${rootProject.property("brandons_core_neoforge_version")}")
+    runtimeOnly("curse.maven:codechicken-lib-1-8-242818:${rootProject.property("codechicken_lib_neoforge_version")}")
 }
 
 tasks.named("configureLaunch") {
@@ -208,6 +211,7 @@ tasks.processResources {
         "kotlin_for_forge_version" to rootProject.property("kotlin_for_forge_version"),
         "mcotelcore_version_slug" to rootProject.property("mcotelcore_version_slug"),
         "mcotelcore_version_raw" to rootProject.property("mcotelcore_version_raw"),
+        "draconic_evolution_version_raw" to rootProject.property("draconic_evolution_version_raw"),
     )
     inputs.properties(expansionMap)
 

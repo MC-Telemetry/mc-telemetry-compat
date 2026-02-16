@@ -16,6 +16,13 @@ repositories {
     maven {
         url = uri("https://maven.quiltmc.org/repository/release/")
     }
+    maven {
+        name = "CurseMaven"
+        setUrl("https://cursemaven.com")
+        content {
+            includeGroup("curse.maven")
+        }
+    }
 }
 
 architectury {
@@ -150,7 +157,9 @@ dependencies {
     // opentelemetry
     compileOnly("io.opentelemetry:opentelemetry-api:${rootProject.property("otel_version")}")
 
-    modImplementation("de.mctelemetry:mc-telemetry-core+fabric:${rootProject.property("mcotelcore_version_slug")}")
+    modImplementation("curse.maven:mc-telemetry-core-1424812:${rootProject.property("mcotelcore_fabric_version")}") {
+        isTransitive = false
+    }
 }
 
 tasks.named("configureLaunch") {

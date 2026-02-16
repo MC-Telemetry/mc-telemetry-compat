@@ -25,7 +25,7 @@ dependencies {
     // opentelemetry
     compileOnly("io.opentelemetry:opentelemetry-api:${rootProject.property("otel_version")}")
 
-    compileOnly("de.mctelemetry:mc-telemetry-core:${rootProject.property("mcotelcore_version_slug")}") {
+    modCompileOnly("de.mctelemetry:mc-telemetry-core:${rootProject.property("mcotelcore_version_raw")}") {
         isTransitive = false
     }
 }

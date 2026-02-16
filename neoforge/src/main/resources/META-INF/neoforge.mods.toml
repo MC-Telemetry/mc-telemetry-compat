@@ -58,3 +58,14 @@ side = "BOTH"
 [dependencies.${mod_id}.mc-publish]
 modrinth="vSaayyqb"
 curseforge=1424812
+
+
+[[dependencies.${mod_id}]]
+modId = "draconicevolution"
+mandatory = false
+versionRange = "[${draconic_evolution_version_raw},)"
+ordering = "AFTER"
+side = "BOTH"
+[dependencies.${mod_id}.mc-publish]
+modrinth="nBqivi8H"
+curseforge=223565
