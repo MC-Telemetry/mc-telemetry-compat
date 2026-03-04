@@ -63,6 +63,7 @@ curseforge=1424812
 [[dependencies.${mod_id}]]
 modId = "draconicevolution"
 mandatory = false
+type = "optional"
 versionRange = "[${draconic_evolution_version_raw},)"
 ordering = "AFTER"
 side = "BOTH"
