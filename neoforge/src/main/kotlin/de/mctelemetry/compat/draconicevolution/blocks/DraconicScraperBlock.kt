@@ -8,11 +8,11 @@ import de.mctelemetry.core.blocks.ScraperBlock
 import net.minecraft.world.level.block.BaseEntityBlock
 
 @DraconicEvolutionModRequired
-class DraconicScraperBlock(properties: Properties): ScraperBlock(properties) {
+class DraconicScraperBlock(properties: Properties): ScraperBlock(properties.noOcclusion()) {
 
     override fun codec(): MapCodec<out BaseEntityBlock> = CODEC
 
     companion object {
-        val CODEC: MapCodec<ObservationSourceContainerBlock> = simpleCodec(::ContainerScraperBlock)
+        val CODEC: MapCodec<ObservationSourceContainerBlock> = simpleCodec(::DraconicScraperBlock)
     }
 }

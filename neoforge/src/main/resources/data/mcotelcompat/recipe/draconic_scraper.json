@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "mcotelcore:telemetry_core"
+    },
+    {
+      "item": "minecraft:observer"
+    },
+    {
+      "item": "draconicevolution:draconium_core"
+    }
+  ],
+  "result": {
+    "id": "mcotelcompat:draconic_scraper",
+    "count": 1
+  }
+}

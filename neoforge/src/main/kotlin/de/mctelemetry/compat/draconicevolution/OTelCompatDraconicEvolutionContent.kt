@@ -8,6 +8,8 @@ import de.mctelemetry.compat.draconicevolution.blocks.DraconicScraperBlock
 import de.mctelemetry.compat.draconicevolution.observations.opstorage.EnergyCoreAmountObservationSource
 import de.mctelemetry.compat.draconicevolution.observations.opstorage.EnergyCoreCapacityObservationSource
 import de.mctelemetry.compat.draconicevolution.observations.opstorage.EnergyCoreFillRatioObservationSource
+import de.mctelemetry.compat.neoforge.`arch$tab`
+import de.mctelemetry.core.OTelCoreMod
 import de.mctelemetry.core.api.OTelCoreModAPI
 import de.mctelemetry.core.api.observations.IObservationSource
 import de.mctelemetry.core.component.OTelCoreModComponents
@@ -36,13 +38,14 @@ object OTelCompatDraconicEvolutionContent {
     )
 
     val DRACONIC_SCRAPER_BLOCK = BLOCKS.register("draconic_scraper") { ->
-        DraconicScraperBlock(BlockBehaviour.Properties.of())
+        DraconicScraperBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.5f))
     }
 
     val DRACONIC_SCRAPER_ITEM = ITEMS.register("draconic_scraper") { ->
         BlockItem(
             DRACONIC_SCRAPER_BLOCK.get(),
             Item.Properties()
+                .`arch$tab`(OTelCoreMod.OTEL_TAB)
                 .component(OTelCoreModComponents.GENERATE_SINGLETON_STATES.get(), true)
         )
     }
