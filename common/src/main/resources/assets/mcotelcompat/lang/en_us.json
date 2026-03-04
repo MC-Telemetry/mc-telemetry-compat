@@ -2,6 +2,9 @@
   "item.mcotelcompat.draconic_scraper": "Draconic Scraper",
   "block.mcotelcompat.draconic_scraper": "Draconic Scraper",
   "container.mcotelcompat.draconic_scraper": "Draconic Scraper",
+  "item.mcotelcompat.applied_energistics2_scraper": "AE2 Scraper",
+  "block.mcotelcompat.applied_energistics2_scraper": "AE2 Scraper",
+  "container.mcotelcompat.applied_energistics2_scraper": "AE2 Scraper",
   "mcotelcore.observation_sources.mcotelcompat.draconic_scraper.energy_core.amount": "Energy Core Amount",
   "mcotelcore.observation_sources.mcotelcompat.draconic_scraper.energy_core.capacity": "Energy Core Capacity",
   "mcotelcore.observation_sources.mcotelcompat.draconic_scraper.energy_core.fill_ratio": "Energy Core Fill Ratio"

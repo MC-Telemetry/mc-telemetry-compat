@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "mcotelcompat:draconic_scraper"
+    "mcotelcompat:draconic_scraper",
+    "mcotelcompat:applied_energistics2_scraper"
   ]
 }

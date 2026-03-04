@@ -1,6 +1,8 @@
 package de.mctelemetry.compat.neoforge
 
 import de.mctelemetry.compat.OTelCompatMod
+import de.mctelemetry.compat.appliedenergisitics2.AppliedEnergistics2ModRequired
+import de.mctelemetry.compat.appliedenergisitics2.OTelCompatAppliedEnergistics2Content
 import de.mctelemetry.compat.draconicevolution.DraconicEvolutionModRequired
 import de.mctelemetry.compat.draconicevolution.OTelCompatDraconicEvolutionContent
 import dev.architectury.platform.Platform
@@ -24,6 +26,11 @@ object OTelCompatModNeoForge {
         if (Platform.isModLoaded("draconicevolution")) {
             @OptIn(DraconicEvolutionModRequired::class)
             OTelCompatDraconicEvolutionContent.register(MOD_BUS)
+        }
+
+        if (Platform.isModLoaded("ae2")) {
+            @OptIn(AppliedEnergistics2ModRequired::class)
+            OTelCompatAppliedEnergistics2Content.register(MOD_BUS)
         }
     }
 
