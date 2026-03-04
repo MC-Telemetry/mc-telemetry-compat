@@ -70,3 +70,14 @@ side = "BOTH"
 [dependencies.${mod_id}.mc-publish]
 modrinth="nBqivi8H"
 curseforge=223565
+
+[[dependencies.${mod_id}]]
+modId = "ae2"
+mandatory = false
+type = "optional"
+versionRange = "[${appliedenergistics2_api_version},)"
+ordering = "AFTER"
+side = "BOTH"
+[dependencies.${mod_id}.mc-publish]
+modrinth="XxWD5pD3"
+curseforge=223794

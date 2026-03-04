@@ -190,9 +190,16 @@ dependencies {
     modImplementation("curse.maven:mc-telemetry-core-1424812:${rootProject.property("mcotelcore_neoforge_version")}") {
         isTransitive = false
     }
+
+    // draconic evolution
     modImplementation("curse.maven:draconic-evolution-223565:${rootProject.property("draconic_evolution_neoforge_version")}")
     modImplementation("curse.maven:brandons-core-231382:${rootProject.property("brandons_core_neoforge_version")}")
     runtimeOnly("curse.maven:codechicken-lib-1-8-242818:${rootProject.property("codechicken_lib_neoforge_version")}")
+
+    // applied energistics 2
+    compileOnly("org.appliedenergistics:appliedenergistics2:${rootProject.property("appliedenergistics2_api_version")}:api")
+    modRuntimeOnly("curse.maven:applied-energistics-2-223794:${rootProject.property("appliedenergistics2_neoforge_version")}")
+    runtimeOnly("org.appliedenergistics:guideme:${rootProject.property("guideme_version")}")
 }
 
 tasks.named("configureLaunch") {
@@ -212,6 +219,7 @@ tasks.processResources {
         "mcotelcore_version_slug" to rootProject.property("mcotelcore_version_slug"),
         "mcotelcore_version_raw" to rootProject.property("mcotelcore_version_raw"),
         "draconic_evolution_version_raw" to rootProject.property("draconic_evolution_version_raw"),
+        "appliedenergistics2_api_version" to rootProject.property("appliedenergistics2_api_version"),
     )
     inputs.properties(expansionMap)
 
