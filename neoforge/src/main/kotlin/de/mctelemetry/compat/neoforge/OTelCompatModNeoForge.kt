@@ -1,6 +1,7 @@
 package de.mctelemetry.compat.neoforge
 
 import de.mctelemetry.compat.OTelCompatMod
+import de.mctelemetry.compat.draconicevolution.DraconicEvolutionModRequired
 import de.mctelemetry.compat.draconicevolution.OTelCompatDraconicEvolutionContent
 import dev.architectury.platform.Platform
 import net.neoforged.fml.common.Mod
@@ -21,6 +22,7 @@ object OTelCompatModNeoForge {
 
     private fun registerContent() {
         if (Platform.isModLoaded("draconicevolution")) {
+            @OptIn(DraconicEvolutionModRequired::class)
             OTelCompatDraconicEvolutionContent.register(MOD_BUS)
         }
     }

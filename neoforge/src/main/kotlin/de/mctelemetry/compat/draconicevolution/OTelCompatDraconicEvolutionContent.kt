@@ -1,6 +1,5 @@
 package de.mctelemetry.compat.draconicevolution
 
-import com.brandon3055.draconicevolution.blocks.machines.EnergyCore
 import com.brandon3055.draconicevolution.blocks.tileentity.TileEnergyCore
 import com.brandon3055.draconicevolution.blocks.tileentity.TileEnergyCoreStabilizer
 import com.brandon3055.draconicevolution.blocks.tileentity.TileEnergyPylon
@@ -12,10 +11,8 @@ import de.mctelemetry.compat.draconicevolution.observations.opstorage.EnergyCore
 import de.mctelemetry.core.api.OTelCoreModAPI
 import de.mctelemetry.core.api.observations.IObservationSource
 import de.mctelemetry.core.component.OTelCoreModComponents
-import dev.architectury.registry.registries.RegistrySupplier
 import net.minecraft.core.BlockPos
 import net.minecraft.core.registries.Registries
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.Item
@@ -25,8 +22,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredRegister
-import java.util.function.Supplier
 
+@DraconicEvolutionModRequired
 object OTelCompatDraconicEvolutionContent {
 
     val BLOCKS: DeferredRegister<Block> = DeferredRegister.create(Registries.BLOCK, OTelCompatMod.MOD_ID)

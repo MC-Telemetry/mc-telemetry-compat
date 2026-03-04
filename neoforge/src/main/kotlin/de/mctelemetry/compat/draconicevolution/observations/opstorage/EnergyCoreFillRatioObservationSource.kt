@@ -1,9 +1,8 @@
 package de.mctelemetry.compat.draconicevolution.observations.opstorage
 
 import com.brandon3055.draconicevolution.blocks.tileentity.TileEnergyCore
-import com.brandon3055.draconicevolution.blocks.tileentity.TileEnergyCoreStabilizer
-import com.brandon3055.draconicevolution.blocks.tileentity.TileEnergyPylon
 import de.mctelemetry.compat.OTelCompatMod
+import de.mctelemetry.compat.draconicevolution.DraconicEvolutionModRequired
 import de.mctelemetry.compat.draconicevolution.OTelCompatDraconicEvolutionContent.getDraconicEvolutionTileEnergyCore
 import de.mctelemetry.core.api.OTelCoreModAPI
 import de.mctelemetry.core.api.attributes.AttributeDataSource
@@ -21,6 +20,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.level.block.entity.BlockEntity
 
+@DraconicEvolutionModRequired
 object EnergyCoreFillRatioObservationSource : PositionObservationSourceBase.PositionSingletonBase<EnergyCoreFillRatioObservationSource>() {
 
     override val id: ResourceKey<IObservationSource<*, *>>
