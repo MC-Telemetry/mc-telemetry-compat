@@ -1,8 +1,8 @@
 package de.mctelemetry.compat.neoforge
 
 import de.mctelemetry.compat.OTelCompatMod
-import de.mctelemetry.compat.appliedenergisitics2.AppliedEnergistics2ModRequired
-import de.mctelemetry.compat.appliedenergisitics2.OTelCompatAppliedEnergistics2Content
+import de.mctelemetry.compat.appliedenergistics2.AppliedEnergistics2ModRequired
+import de.mctelemetry.compat.appliedenergistics2.OTelCompatAppliedEnergistics2Content
 import de.mctelemetry.compat.draconicevolution.DraconicEvolutionModRequired
 import de.mctelemetry.compat.draconicevolution.OTelCompatDraconicEvolutionContent
 import dev.architectury.platform.Platform

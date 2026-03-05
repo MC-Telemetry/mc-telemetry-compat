@@ -1,0 +1,4 @@
+package de.mctelemetry.compat.appliedenergistics2
+
+@RequiresOptIn
+annotation class AppliedEnergistics2ModRequired
