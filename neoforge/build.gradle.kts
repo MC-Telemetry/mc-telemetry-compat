@@ -191,6 +191,9 @@ dependencies {
         isTransitive = false
     }
 
+    // GeckoLib
+    modImplementation("software.bernie.geckolib:geckolib-neoforge-1.21.1:${rootProject.property("geckolib_version")}")
+
     // draconic evolution
     modImplementation("curse.maven:draconic-evolution-223565:${rootProject.property("draconic_evolution_neoforge_version")}")
     modImplementation("curse.maven:brandons-core-231382:${rootProject.property("brandons_core_neoforge_version")}")
@@ -218,6 +221,7 @@ tasks.processResources {
         "kotlin_for_forge_version" to rootProject.property("kotlin_for_forge_version"),
         "mcotelcore_version_slug" to rootProject.property("mcotelcore_version_slug"),
         "mcotelcore_version_raw" to rootProject.property("mcotelcore_version_raw"),
+        "geckolib_version" to rootProject.property("geckolib_version"),
         "draconic_evolution_version_raw" to rootProject.property("draconic_evolution_version_raw"),
         "appliedenergistics2_api_version" to rootProject.property("appliedenergistics2_api_version"),
     )

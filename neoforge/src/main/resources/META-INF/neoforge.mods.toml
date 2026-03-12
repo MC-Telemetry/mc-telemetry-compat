@@ -81,3 +81,13 @@ side = "BOTH"
 [dependencies.${mod_id}.mc-publish]
 modrinth="XxWD5pD3"
 curseforge=223794
+
+[[dependencies.${mod_id}]]
+modId = "geckolib"
+mandatory = true
+versionRange = "[${geckolib_version},)"
+ordering = "AFTER"
+side = "BOTH"
+[dependencies.${mod_id}.mc-publish]
+modrinth="8BmcQJ2H"
+curseforge=388172

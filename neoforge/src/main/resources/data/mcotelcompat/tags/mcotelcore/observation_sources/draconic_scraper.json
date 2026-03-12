@@ -1,7 +1,16 @@
 {
   "values": [
-    "mcotelcompat:draconic_scraper.energy_core.amount",
-    "mcotelcompat:draconic_scraper.energy_core.capacity",
-    "mcotelcompat:draconic_scraper.energy_core.fill_ratio"
+    {
+      "id": "mcotelcompat:draconic_scraper.energy_core.amount",
+      "required": false
+    },
+    {
+      "id": "mcotelcompat:draconic_scraper.energy_core.capacity",
+      "required": false
+    },
+    {
+      "id": "mcotelcompat:draconic_scraper.energy_core.fill_ratio",
+      "required": false
+    }
   ]
 }

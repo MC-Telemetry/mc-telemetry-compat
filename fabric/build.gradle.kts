@@ -160,6 +160,9 @@ dependencies {
     modImplementation("curse.maven:mc-telemetry-core-1424812:${rootProject.property("mcotelcore_fabric_version")}") {
         isTransitive = false
     }
+
+    // GeckoLib
+    modImplementation("software.bernie.geckolib:geckolib-fabric-1.21.1:${rootProject.property("geckolib_version")}")
 }
 
 tasks.named("configureLaunch") {
@@ -177,6 +180,7 @@ tasks.processResources {
         "fabric_kotlin_version" to rootProject.property("fabric_kotlin_version"),
         "mcotelcore_version_slug" to rootProject.property("mcotelcore_version_slug"),
         "mcotelcore_version_raw" to rootProject.property("mcotelcore_version_raw"),
+        "geckolib_version" to rootProject.property("geckolib_version"),
     )
     inputs.properties(expansionMap)
 

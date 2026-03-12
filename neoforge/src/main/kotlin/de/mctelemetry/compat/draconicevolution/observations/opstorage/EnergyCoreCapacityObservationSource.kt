@@ -23,8 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
 @DraconicEvolutionModRequired
 object EnergyCoreCapacityObservationSource : PositionObservationSourceBase.PositionSingletonBase<EnergyCoreCapacityObservationSource>() {
 
-    override val id: ResourceKey<IObservationSource<*, *>>
-        get() = ResourceKey.create(
+    override val id: ResourceKey<IObservationSource<*, *>> = ResourceKey.create(
             OTelCoreModAPI.ObservationSources, ResourceLocation.fromNamespaceAndPath(
                 OTelCompatMod.MOD_ID, "draconic_scraper.energy_core.capacity"
             )

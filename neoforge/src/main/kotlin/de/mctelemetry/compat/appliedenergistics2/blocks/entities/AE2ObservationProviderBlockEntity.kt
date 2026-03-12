@@ -23,7 +23,7 @@ import java.util.EnumSet
 class AE2ObservationProviderBlockEntity(
     blockPos: BlockPos,
     blockState: BlockState
-) : ObservationSourceContainerBlockEntity(
+) : ObservationSourceContainerBlockEntity<IGridNode>(
     OTelCompatAppliedEnergistics2Content.AE2_OBSERVATION_PROVIDER_BLOCK_ENTITY.get(),
     blockPos,
     blockState
@@ -31,6 +31,12 @@ class AE2ObservationProviderBlockEntity(
     @Suppress("UNCHECKED_CAST")
     override fun getType(): BlockEntityType<AE2ObservationProviderBlockEntity> =
         blockEntityType as BlockEntityType<AE2ObservationProviderBlockEntity>
+
+    override val context: IGridNode?
+        get() = nodeIfActive
+
+    override val contextClass: Class<out IGridNode>
+        get() = IGridNode::class.java
 
     private val managedNode: IManagedGridNode = GridHelper.createManagedNode(this, GridNodeListener)
         .setFlags(GridFlags.REQUIRE_CHANNEL)

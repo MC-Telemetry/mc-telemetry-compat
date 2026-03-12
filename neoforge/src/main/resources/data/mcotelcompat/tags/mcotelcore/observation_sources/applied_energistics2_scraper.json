@@ -1,5 +1,12 @@
 {
   "values": [
-    "mcotelcompat:applied_energistics2_scraper.energy_core.amount"
+    {
+      "id": "mcotelcompat:applied_energistics2_connector.grid.energy.amount",
+      "required": false
+    },
+    {
+      "id": "mcotelcompat:applied_energistics2_connector.grid.energy.capacity",
+      "required": false
+    }
   ]
 }

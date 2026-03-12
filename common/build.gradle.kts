@@ -28,4 +28,7 @@ dependencies {
     modCompileOnly("de.mctelemetry:mc-telemetry-core:${rootProject.property("mcotelcore_version_raw")}") {
         isTransitive = false
     }
+
+    // GeckoLib
+    modCompileOnly("software.bernie.geckolib:geckolib-common-1.21.1:${rootProject.property("geckolib_version")}")
 }
