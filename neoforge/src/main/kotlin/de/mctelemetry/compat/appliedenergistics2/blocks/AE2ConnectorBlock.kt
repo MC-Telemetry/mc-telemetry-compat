@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 
 @AppliedEnergistics2ModRequired
-class AE2ConnectorBlock(properties: BlockBehaviour.Properties) : ObservationSourceContainerBlock(properties) {
+class AE2ConnectorBlock(properties: BlockBehaviour.Properties) : ObservationSourceContainerBlock(properties.noOcclusion()) {
     override fun codec(): MapCodec<AE2ConnectorBlock> {
         return CODEC
     }
@@ -32,7 +32,7 @@ class AE2ConnectorBlock(properties: BlockBehaviour.Properties) : ObservationSour
     }
 
     override fun getRenderShape(arg: BlockState): RenderShape {
-        return RenderShape.MODEL
+        return RenderShape.ENTITYBLOCK_ANIMATED
     }
 
 

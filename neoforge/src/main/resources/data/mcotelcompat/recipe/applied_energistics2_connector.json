@@ -1,16 +1,24 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "mcotelcore:telemetry_core"
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " L ",
+    "OMF",
+    " L "
+  ],
+  "key": {
+    "F": {
+      "item": "mcotelcore:frame"
     },
-    {
+    "M": {
+      "item": "mcotelcore:observation_module"
+    },
+    "O": {
       "item": "minecraft:observer"
     },
-    {
-      "tag": "c:gems/fluix"
+    "L": {
+    "tag": "c:gems/fluix"
     }
-  ],
+  },
   "result": {
     "id": "mcotelcompat:applied_energistics2_connector",
     "count": 1

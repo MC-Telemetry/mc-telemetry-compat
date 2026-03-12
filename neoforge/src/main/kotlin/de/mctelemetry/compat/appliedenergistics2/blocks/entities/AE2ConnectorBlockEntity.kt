@@ -9,7 +9,6 @@ import appeng.api.networking.IManagedGridNode
 import appeng.api.stacks.AEItemKey
 import de.mctelemetry.compat.appliedenergistics2.AppliedEnergistics2ModRequired
 import de.mctelemetry.compat.appliedenergistics2.OTelCompatAppliedEnergistics2Content
-import de.mctelemetry.core.api.observations.IObservationSource
 import de.mctelemetry.core.blocks.entities.ObservationSourceContainerBlockEntity
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -18,6 +17,10 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import software.bernie.geckolib.animatable.GeoBlockEntity
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache
+import software.bernie.geckolib.animation.AnimatableManager
+import software.bernie.geckolib.util.GeckoLibUtil
 import java.util.EnumSet
 
 @AppliedEnergistics2ModRequired
@@ -28,7 +31,9 @@ class AE2ConnectorBlockEntity(
     OTelCompatAppliedEnergistics2Content.AE2_CONNECTOR_BLOCK_ENTITY.get(),
     blockPos,
     blockState
-), IInWorldGridNodeHost {
+), IInWorldGridNodeHost, GeoBlockEntity {
+    private val instanceCache = GeckoLibUtil.createInstanceCache(this)
+
     @Suppress("UNCHECKED_CAST")
     override fun getType(): BlockEntityType<AE2ConnectorBlockEntity> =
         blockEntityType as BlockEntityType<AE2ConnectorBlockEntity>
@@ -80,6 +85,9 @@ class AE2ConnectorBlockEntity(
         }
     }
 
+    override fun registerControllers(p0: AnimatableManager.ControllerRegistrar?) {}
+
+    override fun getAnimatableInstanceCache(): AnimatableInstanceCache = instanceCache
 
     override fun getGridNode(dir: Direction?): IGridNode? {
         if (dir != null && dir != blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)) {

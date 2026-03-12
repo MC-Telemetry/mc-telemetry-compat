@@ -5,14 +5,18 @@ import appeng.api.networking.IInWorldGridNodeHost
 import de.mctelemetry.compat.OTelCompatMod
 import de.mctelemetry.compat.appliedenergistics2.blocks.AE2ConnectorBlock
 import de.mctelemetry.compat.appliedenergistics2.blocks.entities.AE2ConnectorBlockEntity
+import de.mctelemetry.compat.appliedenergistics2.geo.renderer.blocks.AE2ConnectorBlockEntityRenderer
 import de.mctelemetry.compat.appliedenergistics2.observations.network.energy.GridCurrentEnergyObservationSource
 import de.mctelemetry.compat.appliedenergistics2.observations.network.energy.GridMaxEnergyObservationSource
+import de.mctelemetry.compat.geo.items.ObservationContainerStatusBlockItem
 import de.mctelemetry.compat.neoforge.`arch$tab`
 import de.mctelemetry.core.OTelCoreMod
 import de.mctelemetry.core.api.OTelCoreModAPI
 import de.mctelemetry.core.api.observations.IObservationSource
 import de.mctelemetry.core.component.OTelCoreModComponents
 import de.mctelemetry.core.utils.consumeAllRethrow
+import dev.architectury.platform.Platform
+import dev.architectury.utils.Env
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.Item
@@ -21,11 +25,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
+import net.neoforged.neoforge.client.event.EntityRenderersEvent
 import net.neoforged.neoforge.common.NeoForge
 import net.neoforged.neoforge.event.tick.ServerTickEvent
 import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredRegister
 import java.util.LinkedList
+import kotlin.jvm.java
 
 @AppliedEnergistics2ModRequired
 object OTelCompatAppliedEnergistics2Content {
@@ -49,7 +55,7 @@ object OTelCompatAppliedEnergistics2Content {
     }
 
     val AE2_CONNECTOR_ITEM = ITEMS.register("applied_energistics2_connector") { ->
-        BlockItem(
+        ObservationContainerStatusBlockItem(
             AE2_CONNECTOR_BLOCK.get(),
             Item.Properties()
                 .`arch$tab`(OTelCoreMod.OTEL_TAB)
@@ -84,6 +90,18 @@ object OTelCompatAppliedEnergistics2Content {
         OBSERVATION_SOURCES.register(bus)
         bus.addListener(this::registerCapabilities)
         NeoForge.EVENT_BUS.addListener(TickEndListenerExecutor::onTickEnd)
+        if (Platform.getEnvironment() == Env.CLIENT) {
+            clientRegister(bus)
+        }
+    }
+
+    private fun clientRegister(bus: IEventBus) {
+        bus.addListener(EntityRenderersEvent.RegisterRenderers::class.java) { event ->
+            event.registerBlockEntityRenderer(
+                AE2_CONNECTOR_BLOCK_ENTITY.get(),
+                ::AE2ConnectorBlockEntityRenderer
+            )
+        }
     }
 
     private fun registerCapabilities(event: RegisterCapabilitiesEvent) {
