@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     {
-      "id": "mcotelcompat:applied_energistics2_scraper",
+      "id": "mcotelcompat:applied_energistics2_connector",
       "required": false
     }
   ]

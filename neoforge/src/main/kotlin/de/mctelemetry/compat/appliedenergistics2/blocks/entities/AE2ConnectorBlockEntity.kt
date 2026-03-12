@@ -9,6 +9,7 @@ import appeng.api.networking.IManagedGridNode
 import appeng.api.stacks.AEItemKey
 import de.mctelemetry.compat.appliedenergistics2.AppliedEnergistics2ModRequired
 import de.mctelemetry.compat.appliedenergistics2.OTelCompatAppliedEnergistics2Content
+import de.mctelemetry.core.api.observations.IObservationSource
 import de.mctelemetry.core.blocks.entities.ObservationSourceContainerBlockEntity
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -20,17 +21,17 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import java.util.EnumSet
 
 @AppliedEnergistics2ModRequired
-class AE2ObservationProviderBlockEntity(
+class AE2ConnectorBlockEntity(
     blockPos: BlockPos,
     blockState: BlockState
 ) : ObservationSourceContainerBlockEntity<IGridNode>(
-    OTelCompatAppliedEnergistics2Content.AE2_OBSERVATION_PROVIDER_BLOCK_ENTITY.get(),
+    OTelCompatAppliedEnergistics2Content.AE2_CONNECTOR_BLOCK_ENTITY.get(),
     blockPos,
     blockState
 ), IInWorldGridNodeHost {
     @Suppress("UNCHECKED_CAST")
-    override fun getType(): BlockEntityType<AE2ObservationProviderBlockEntity> =
-        blockEntityType as BlockEntityType<AE2ObservationProviderBlockEntity>
+    override fun getType(): BlockEntityType<AE2ConnectorBlockEntity> =
+        blockEntityType as BlockEntityType<AE2ConnectorBlockEntity>
 
     override val context: IGridNode?
         get() = nodeIfActive
@@ -125,14 +126,14 @@ class AE2ObservationProviderBlockEntity(
     }
 
 
-    private object GridNodeListener : IGridNodeListener<AE2ObservationProviderBlockEntity> {
-        override fun onSaveChanges(nodeOwner: AE2ObservationProviderBlockEntity, node: IGridNode?) {
+    private object GridNodeListener : IGridNodeListener<AE2ConnectorBlockEntity> {
+        override fun onSaveChanges(nodeOwner: AE2ConnectorBlockEntity, node: IGridNode?) {
             nodeOwner.saveChanges()
         }
     }
 
     companion object {
         private val visualRepresentation: AEItemKey =
-            AEItemKey.of { OTelCompatAppliedEnergistics2Content.AE2_OBSERVATION_PROVIDER_ITEM.get() }
+            AEItemKey.of { OTelCompatAppliedEnergistics2Content.AE2_CONNECTOR_ITEM.get() }
     }
 }

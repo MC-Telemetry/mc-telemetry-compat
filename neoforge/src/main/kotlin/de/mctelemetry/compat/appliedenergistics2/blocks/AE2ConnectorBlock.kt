@@ -2,7 +2,7 @@ package de.mctelemetry.compat.appliedenergistics2.blocks
 
 import com.mojang.serialization.MapCodec
 import de.mctelemetry.compat.appliedenergistics2.AppliedEnergistics2ModRequired
-import de.mctelemetry.compat.appliedenergistics2.blocks.entities.AE2ObservationProviderBlockEntity
+import de.mctelemetry.compat.appliedenergistics2.blocks.entities.AE2ConnectorBlockEntity
 import de.mctelemetry.core.blocks.ObservationSourceContainerBlock
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -16,19 +16,19 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 
 @AppliedEnergistics2ModRequired
-class AE2ObservationProviderBlock(properties: BlockBehaviour.Properties) : ObservationSourceContainerBlock(properties) {
-    override fun codec(): MapCodec<AE2ObservationProviderBlock> {
+class AE2ConnectorBlock(properties: BlockBehaviour.Properties) : ObservationSourceContainerBlock(properties) {
+    override fun codec(): MapCodec<AE2ConnectorBlock> {
         return CODEC
     }
 
-    override fun newBlockEntity(blockPos: BlockPos, blockState: BlockState): AE2ObservationProviderBlockEntity {
-        return AE2ObservationProviderBlockEntity(
+    override fun newBlockEntity(blockPos: BlockPos, blockState: BlockState): AE2ConnectorBlockEntity {
+        return AE2ConnectorBlockEntity(
             blockPos, blockState,
         )
     }
 
     companion object {
-        val CODEC: MapCodec<AE2ObservationProviderBlock> = simpleCodec(::AE2ObservationProviderBlock)
+        val CODEC: MapCodec<AE2ConnectorBlock> = simpleCodec(::AE2ConnectorBlock)
     }
 
     override fun getRenderShape(arg: BlockState): RenderShape {

@@ -3,8 +3,10 @@ package de.mctelemetry.compat.appliedenergistics2
 import appeng.api.AECapabilities
 import appeng.api.networking.IInWorldGridNodeHost
 import de.mctelemetry.compat.OTelCompatMod
-import de.mctelemetry.compat.appliedenergistics2.blocks.AE2ObservationProviderBlock
-import de.mctelemetry.compat.appliedenergistics2.blocks.entities.AE2ObservationProviderBlockEntity
+import de.mctelemetry.compat.appliedenergistics2.blocks.AE2ConnectorBlock
+import de.mctelemetry.compat.appliedenergistics2.blocks.entities.AE2ConnectorBlockEntity
+import de.mctelemetry.compat.appliedenergistics2.observations.network.energy.GridCurrentEnergyObservationSource
+import de.mctelemetry.compat.appliedenergistics2.observations.network.energy.GridMaxEnergyObservationSource
 import de.mctelemetry.compat.neoforge.`arch$tab`
 import de.mctelemetry.core.OTelCoreMod
 import de.mctelemetry.core.api.OTelCoreModAPI
@@ -42,27 +44,34 @@ object OTelCompatAppliedEnergistics2Content {
         OTelCompatMod.MOD_ID
     )
 
-    val AE2_OBSERVATION_PROVIDER_BLOCK = BLOCKS.register("ae2_observation_provider") { ->
-        AE2ObservationProviderBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.5f))
+    val AE2_CONNECTOR_BLOCK = BLOCKS.register("applied_energistics2_connector") { ->
+        AE2ConnectorBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.5f))
     }
 
-    val AE2_OBSERVATION_PROVIDER_ITEM = ITEMS.register("ae2_observation_provider") { ->
+    val AE2_CONNECTOR_ITEM = ITEMS.register("applied_energistics2_connector") { ->
         BlockItem(
-            AE2_OBSERVATION_PROVIDER_BLOCK.get(),
+            AE2_CONNECTOR_BLOCK.get(),
             Item.Properties()
                 .`arch$tab`(OTelCoreMod.OTEL_TAB)
                 .component(OTelCoreModComponents.GENERATE_SINGLETON_STATES.get(), true)
         )
     }
 
-    val AE2_OBSERVATION_PROVIDER_BLOCK_ENTITY = BLOCK_ENTITIES.register("ae2_observation_provider") { ->
+    val AE2_CONNECTOR_BLOCK_ENTITY = BLOCK_ENTITIES.register("applied_energistics2_connector") { ->
         BlockEntityType(
-            ::AE2ObservationProviderBlockEntity,
-            setOf(AE2_OBSERVATION_PROVIDER_BLOCK.get()),
+            ::AE2ConnectorBlockEntity,
+            setOf(AE2_CONNECTOR_BLOCK.get()),
             null
         )
     }
 
+    val AE2_NETWORK_ENERGY_CURRENT_OBSERVATIONSOURCE = registerObservationSource(
+        GridCurrentEnergyObservationSource
+    )
+
+    val AE2_NETWORK_ENERGY_MAX_OBSERVATIONSOURCE = registerObservationSource(
+        GridMaxEnergyObservationSource
+    )
 
     private fun <T : IObservationSource<*, *>> registerObservationSource(source: T): DeferredHolder<IObservationSource<*, *>, T> {
         return OBSERVATION_SOURCES.register(source.id.location().path) { -> source }
@@ -80,7 +89,7 @@ object OTelCompatAppliedEnergistics2Content {
     private fun registerCapabilities(event: RegisterCapabilitiesEvent) {
         event.registerBlockEntity(
             AECapabilities.IN_WORLD_GRID_NODE_HOST,
-            AE2_OBSERVATION_PROVIDER_BLOCK_ENTITY.get()
+            AE2_CONNECTOR_BLOCK_ENTITY.get()
         ) { obj, _ -> obj as IInWorldGridNodeHost }
     }
 
