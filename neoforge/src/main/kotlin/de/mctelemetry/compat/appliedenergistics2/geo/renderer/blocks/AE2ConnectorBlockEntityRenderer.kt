@@ -3,6 +3,7 @@ package de.mctelemetry.compat.appliedenergistics2.geo.renderer.blocks
 import de.mctelemetry.compat.appliedenergistics2.AppliedEnergistics2ModRequired
 import de.mctelemetry.compat.appliedenergistics2.OTelCompatAppliedEnergistics2Content
 import de.mctelemetry.compat.appliedenergistics2.blocks.entities.AE2ConnectorBlockEntity
+import de.mctelemetry.compat.appliedenergistics2.geo.renderer.blocks.layers.AE2ConnectorBlockEntityStatusRenderLayer
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider
 import software.bernie.geckolib.model.DefaultedBlockGeoModel
 import software.bernie.geckolib.renderer.GeoBlockRenderer
@@ -12,4 +13,7 @@ class AE2ConnectorBlockEntityRenderer(context: BlockEntityRendererProvider.Conte
     DefaultedBlockGeoModel(OTelCompatAppliedEnergistics2Content.AE2_CONNECTOR_BLOCK.id)
 ){
 
+    init {
+        addRenderLayer(AE2ConnectorBlockEntityStatusRenderLayer(this))
+    }
 }

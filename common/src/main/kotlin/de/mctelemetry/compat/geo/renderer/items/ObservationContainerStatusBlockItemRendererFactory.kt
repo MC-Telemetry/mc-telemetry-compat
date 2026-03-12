@@ -3,6 +3,7 @@ package de.mctelemetry.compat.geo.renderer.items
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.VertexConsumer
 import de.mctelemetry.compat.geo.items.ObservationContainerStatusBlockItem
+import de.mctelemetry.compat.geo.renderer.items.layers.ObservationContainerStatusBlockItemStatusRenderLayer
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer
 import net.minecraft.client.renderer.MultiBufferSource
 import software.bernie.geckolib.animatable.client.GeoRenderProvider
@@ -45,6 +46,7 @@ object ObservationContainerStatusBlockItemRendererFactory {
                                 poseStack.translate(0f, -0.51f, 0f);
                         }
                     }).apply {
+                        addRenderLayer(ObservationContainerStatusBlockItemStatusRenderLayer(this))
                     }
                 }
 
