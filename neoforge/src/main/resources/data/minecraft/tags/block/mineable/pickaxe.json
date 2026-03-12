@@ -2,12 +2,8 @@
   "replace": false,
   "values": [
     {
-      "id": "mcotelcompat:draconic_scraper",
-      "required": false
-    },
-    {
       "id": "mcotelcompat:applied_energistics2_scraper",
       "required": false
-    },
+    }
   ]
 }

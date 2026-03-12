@@ -13,6 +13,7 @@ import de.mctelemetry.core.OTelCoreMod
 import de.mctelemetry.core.api.OTelCoreModAPI
 import de.mctelemetry.core.api.observations.IObservationSource
 import de.mctelemetry.core.component.OTelCoreModComponents
+import de.mctelemetry.core.items.ScraperBlockItem
 import net.minecraft.core.BlockPos
 import net.minecraft.core.registries.Registries
 import net.minecraft.server.level.ServerLevel
@@ -42,7 +43,7 @@ object OTelCompatDraconicEvolutionContent {
     }
 
     val DRACONIC_SCRAPER_ITEM = ITEMS.register("draconic_scraper") { ->
-        BlockItem(
+        ScraperBlockItem(
             DRACONIC_SCRAPER_BLOCK.get(),
             Item.Properties()
                 .`arch$tab`(OTelCoreMod.OTEL_TAB)
