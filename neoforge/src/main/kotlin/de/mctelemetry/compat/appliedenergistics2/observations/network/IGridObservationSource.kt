@@ -9,6 +9,6 @@ interface IGridObservationSource<
         I : IGridObservationSourceInstance<*, I>
         > : IObservationSource<IGridNode, I> {
 
-    override val sourceContextType: Class<IGridNode>
+    override val sourceOwnerType: Class<IGridNode>
         get() = IGridNode::class.java
 }

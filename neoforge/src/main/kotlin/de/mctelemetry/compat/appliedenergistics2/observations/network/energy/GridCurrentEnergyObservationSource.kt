@@ -9,13 +9,14 @@ import de.mctelemetry.core.api.attributes.AttributeDataSource
 import de.mctelemetry.core.api.attributes.IAttributeValueStore
 import de.mctelemetry.core.api.observations.IObservationRecorder
 import de.mctelemetry.core.api.observations.IObservationSource
+import de.mctelemetry.core.utils.EmptyAutoCloseable
 import de.mctelemetry.core.utils.observe
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 
 @AppliedEnergistics2ModRequired
 object GridCurrentEnergyObservationSource :
-    GridObservationSourceBase.GridSingletonBase<GridCurrentEnergyObservationSource>() {
+    GridObservationSourceBase.GridSingletonBase.Simple<GridCurrentEnergyObservationSource>() {
 
     override val id: ResourceKey<IObservationSource<*, *>> = ResourceKey.create(
         OTelCoreModAPI.ObservationSources, ResourceLocation.fromNamespaceAndPath(
@@ -23,12 +24,12 @@ object GridCurrentEnergyObservationSource :
         )
     )
 
-    context(sourceContext: IGridNode, attributeStore: IAttributeValueStore.MapAttributeStore)
+    context(sourceOwner: IGridNode, observationContext: EmptyAutoCloseable, attributeStore: IAttributeValueStore.Mutable)
     override fun observe(
         recorder: IObservationRecorder.Unresolved,
         unusedAttributes: Set<AttributeDataSource<*>>
     ) {
-        val energyService = sourceContext.grid.energyService
+        val energyService = sourceOwner.grid.energyService
         recorder.observe(energyService.storedPower)
     }
 }

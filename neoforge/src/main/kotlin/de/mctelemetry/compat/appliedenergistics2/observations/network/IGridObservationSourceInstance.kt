@@ -5,9 +5,9 @@ import de.mctelemetry.core.api.attributes.IAttributeValueStore
 import de.mctelemetry.core.api.observations.IObservationSourceInstance
 
 interface IGridObservationSourceInstance<
-        AS : IAttributeValueStore.Mutable,
-        out I : IGridObservationSourceInstance<AS, I>,
-        > : IObservationSourceInstance<IGridNode, AS, I> {
+        OC : AutoCloseable,
+        out I : IGridObservationSourceInstance<OC, I>,
+        > : IObservationSourceInstance<IGridNode, OC, I> {
 
     override val source: IGridObservationSource<out I>
 

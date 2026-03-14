@@ -38,10 +38,10 @@ class AE2ConnectorBlockEntity(
     override fun getType(): BlockEntityType<AE2ConnectorBlockEntity> =
         blockEntityType as BlockEntityType<AE2ConnectorBlockEntity>
 
-    override val context: IGridNode?
+    override val owner: IGridNode?
         get() = nodeIfActive
 
-    override val contextClass: Class<out IGridNode>
+    override val ownerType: Class<out IGridNode>
         get() = IGridNode::class.java
 
     private val managedNode: IManagedGridNode = GridHelper.createManagedNode(this, GridNodeListener)

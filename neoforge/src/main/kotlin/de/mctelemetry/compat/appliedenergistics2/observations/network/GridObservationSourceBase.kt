@@ -2,41 +2,40 @@ package de.mctelemetry.compat.appliedenergistics2.observations.network
 
 import appeng.api.networking.IGridNode
 import com.mojang.serialization.Codec
-import de.mctelemetry.core.api.attributes.AttributeDataSource
-import de.mctelemetry.core.api.attributes.BuiltinAttributeKeyTypes
-import de.mctelemetry.core.api.attributes.IAttributeValueStore
 import de.mctelemetry.core.api.observations.IObservationSourceSingleton
 import de.mctelemetry.core.api.observations.ObservationSourceBase
+import de.mctelemetry.core.observations.model.ObservationAttributeMapping
 import de.mctelemetry.core.persistence.DirectUnitCodec
-import net.minecraft.core.GlobalPos
+import de.mctelemetry.core.utils.EmptyAutoCloseable
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
 
 abstract class GridObservationSourceBase<
-        I : IGridObservationSourceInstance<IAttributeValueStore.MapAttributeStore, I>
+        I : IGridObservationSourceInstance<*, I>,
         > : ObservationSourceBase<IGridNode, I>(),
     IGridObservationSource<I> {
 
-    final override val sourceContextType: Class<IGridNode> = IGridNode::class.java
+    final override val sourceOwnerType: Class<IGridNode> = IGridNode::class.java
 
-    abstract class GridInstanceBase<out I : GridInstanceBase<I>>(
+    abstract class GridInstanceBase<OC: AutoCloseable, out I : GridInstanceBase<OC, I>>(
         override val source: GridObservationSourceBase<out I>
-    ) : InstanceBase<IGridNode, I>(source),
-        IGridObservationSourceInstance<IAttributeValueStore.MapAttributeStore, I> {
+    ) : InstanceBase<IGridNode, OC, I>(source),
+        IGridObservationSourceInstance<OC, I> {
 
-        context(sourceContext: IGridNode)
-        override fun createAttributeStore(parent: IAttributeValueStore): IAttributeValueStore.MapAttributeStore {
-            return IAttributeValueStore.MapAttributeStore(attributes.references, parent)
+        abstract class Simple<out I : Simple<I>>(source: GridObservationSourceBase<out I>) :
+            GridInstanceBase<EmptyAutoCloseable, I>(source) {
+            context(sourceOwner: IGridNode, mapping: ObservationAttributeMapping)
+            final override fun createObservationContext(): EmptyAutoCloseable = EmptyAutoCloseable
         }
     }
 
-    abstract class GridSingletonBase<I : GridSingletonBase<I>> :
+    abstract class GridSingletonBase<OC: AutoCloseable, I : GridSingletonBase<OC, I>> :
         GridObservationSourceBase<I>(),
         IGridObservationSource<I>,
-        IGridObservationSourceInstance<IAttributeValueStore.MapAttributeStore, I>,
-        IObservationSourceSingleton<IGridNode, IAttributeValueStore.MapAttributeStore, I> {
+        IGridObservationSourceInstance<OC, I>,
+        IObservationSourceSingleton<IGridNode, OC, I> {
 
-        override val source: GridSingletonBase<I>
+        override val source: GridSingletonBase<OC, I>
             get() = this
 
         @Suppress("UNCHECKED_CAST")
@@ -46,9 +45,10 @@ abstract class GridObservationSourceBase<
         override val streamCodec: StreamCodec<in RegistryFriendlyByteBuf, I> = StreamCodec.unit(typedThis)
         override val codec: Codec<I> = DirectUnitCodec(typedThis)
 
-        context(sourceContext: IGridNode)
-        override fun createAttributeStore(parent: IAttributeValueStore): IAttributeValueStore.MapAttributeStore {
-            return IAttributeValueStore.MapAttributeStore(attributes.references, parent)
+        abstract class Simple<I : Simple<I>> :
+            GridSingletonBase<EmptyAutoCloseable, I>() {
+            context(sourceOwner: IGridNode, mapping: ObservationAttributeMapping)
+            final override fun createObservationContext(): EmptyAutoCloseable = EmptyAutoCloseable
         }
     }
 }
