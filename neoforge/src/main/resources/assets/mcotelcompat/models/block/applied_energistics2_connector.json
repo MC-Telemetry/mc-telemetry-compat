@@ -1,0 +1,6 @@
+{
+  "parent": "mcotelcore:block/scraper_base",
+  "textures": {
+    "particle": "mcotelcompat:block/applied_energistics2_connector"
+  }
+}
