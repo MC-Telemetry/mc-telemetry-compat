@@ -39,9 +39,9 @@ object OTelCompatModNeoForge {
             @OptIn(AppliedEnergistics2ModRequired::class)
             OTelCompatAppliedEnergistics2Content.register(MOD_BUS)
         }
-        MOD_BUS.addListener<RegisterEvent> {
-            if(it.registryKey == OTelCoreModAPI.AttributeTypeMappings){
-                it.register(OTelCoreModAPI.AttributeTypeMappings) { helper ->
+        MOD_BUS.addListener<RegisterEvent> { event ->
+            if(event.registryKey == OTelCoreModAPI.AttributeTypeMappings){
+                event.register(OTelCoreModAPI.AttributeTypeMappings) { helper ->
                     helper.register(ResourceLocationAttributeKeyType.id, ResourceLocationAttributeKeyType)
                 }
             }
