@@ -9,5 +9,7 @@
   "mcotelcore.observation_sources.mcotelcompat.draconic_scraper.energy_core.capacity": "Energy Core Capacity",
   "mcotelcore.observation_sources.mcotelcompat.draconic_scraper.energy_core.fill_ratio": "Energy Core Fill Ratio",
   "mcotelcore.observation_sources.mcotelcompat.applied_energistics2_connector.grid.energy.amount": "Grid Energy Amount",
-  "mcotelcore.observation_sources.mcotelcompat.applied_energistics2_connector.grid.energy.capacity": "Grid Energy Capacity"
+  "mcotelcore.observation_sources.mcotelcompat.applied_energistics2_connector.grid.energy.capacity": "Grid Energy Capacity",
+  "mcotelcore.observation_sources.mcotelcompat.applied_energistics2_connector.grid.storage.amount": "Grid Storage Amount",
+  "mcotelcore.observation_sources.mcotelcompat.applied_energistics2_connector.grid.storage.amount.filter": "Grid Storage Amount [filtered]"
 }

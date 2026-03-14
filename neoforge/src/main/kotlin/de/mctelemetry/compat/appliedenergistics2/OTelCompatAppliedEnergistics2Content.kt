@@ -8,6 +8,8 @@ import de.mctelemetry.compat.appliedenergistics2.blocks.entities.AE2ConnectorBlo
 import de.mctelemetry.compat.appliedenergistics2.geo.renderer.blocks.AE2ConnectorBlockEntityRenderer
 import de.mctelemetry.compat.appliedenergistics2.observations.network.energy.GridCurrentEnergyObservationSource
 import de.mctelemetry.compat.appliedenergistics2.observations.network.energy.GridMaxEnergyObservationSource
+import de.mctelemetry.compat.appliedenergistics2.observations.network.storage.GridCurrentFilterStorageObservationSource
+import de.mctelemetry.compat.appliedenergistics2.observations.network.storage.GridCurrentStorageObservationSource
 import de.mctelemetry.compat.geo.items.ObservationContainerStatusBlockItem
 import de.mctelemetry.compat.neoforge.`arch$tab`
 import de.mctelemetry.core.OTelCoreMod
@@ -77,6 +79,14 @@ object OTelCompatAppliedEnergistics2Content {
 
     val AE2_NETWORK_ENERGY_MAX_OBSERVATIONSOURCE = registerObservationSource(
         GridMaxEnergyObservationSource
+    )
+
+    val AE2_NETWORK_STORAGE_CURRENT_OBSERVATIONSOURCE = registerObservationSource(
+        GridCurrentStorageObservationSource
+    )
+
+    val AE2_NETWORK_STORAGE_CURRENT_FILTER_OBSERVATIONSOURCE = registerObservationSource(
+        GridCurrentFilterStorageObservationSource
     )
 
     private fun <T : IObservationSource<*, *>> registerObservationSource(source: T): DeferredHolder<IObservationSource<*, *>, T> {

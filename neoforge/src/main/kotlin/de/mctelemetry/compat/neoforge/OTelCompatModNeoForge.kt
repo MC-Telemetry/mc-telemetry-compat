@@ -1,12 +1,19 @@
 package de.mctelemetry.compat.neoforge
 
+import com.google.common.base.Supplier
 import de.mctelemetry.compat.OTelCompatMod
 import de.mctelemetry.compat.appliedenergistics2.AppliedEnergistics2ModRequired
 import de.mctelemetry.compat.appliedenergistics2.OTelCompatAppliedEnergistics2Content
+import de.mctelemetry.compat.attributes.OTelCompatAttributeKeyTypes
+import de.mctelemetry.compat.attributes.ResourceLocationAttributeKeyType
 import de.mctelemetry.compat.draconicevolution.DraconicEvolutionModRequired
 import de.mctelemetry.compat.draconicevolution.OTelCompatDraconicEvolutionContent
+import de.mctelemetry.core.api.OTelCoreModAPI
+import de.mctelemetry.core.api.attributes.IAttributeKeyTypeTemplate
 import dev.architectury.platform.Platform
+import net.minecraft.resources.ResourceLocation
 import net.neoforged.fml.common.Mod
+import net.neoforged.neoforge.registries.RegisterEvent
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 
 @Suppress("unused")
@@ -31,6 +38,13 @@ object OTelCompatModNeoForge {
         if (Platform.isModLoaded("ae2")) {
             @OptIn(AppliedEnergistics2ModRequired::class)
             OTelCompatAppliedEnergistics2Content.register(MOD_BUS)
+        }
+        MOD_BUS.addListener<RegisterEvent> {
+            if(it.registryKey == OTelCoreModAPI.AttributeTypeMappings){
+                it.register(OTelCoreModAPI.AttributeTypeMappings) { helper ->
+                    helper.register(ResourceLocationAttributeKeyType.id, ResourceLocationAttributeKeyType)
+                }
+            }
         }
     }
 

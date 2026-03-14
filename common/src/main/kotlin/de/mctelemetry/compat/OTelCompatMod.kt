@@ -1,5 +1,6 @@
 package de.mctelemetry.compat
 
+import de.mctelemetry.compat.attributes.OTelCompatAttributeKeyTypes
 import de.mctelemetry.compat.blocks.OTelCompatModBlocks
 import de.mctelemetry.compat.instruments.builtin.BuiltinInstruments
 import de.mctelemetry.compat.items.OTelCompatModItems
@@ -20,6 +21,7 @@ object OTelCompatMod {
     fun registerContent() {
         OTelCompatModBlocks.init()
         OTelCompatModItems.init()
+        //OTelCompatAttributeKeyTypes.init()
     }
 
     fun init() {

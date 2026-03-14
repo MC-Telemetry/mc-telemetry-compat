@@ -7,6 +7,14 @@
     {
       "id": "mcotelcompat:applied_energistics2_connector.grid.energy.capacity",
       "required": false
+    },
+    {
+      "id": "mcotelcompat:applied_energistics2_connector.grid.storage.amount",
+      "required": false
+    },
+    {
+      "id": "mcotelcompat:applied_energistics2_connector.grid.storage.amount.filter",
+      "required": false
     }
   ]
 }
