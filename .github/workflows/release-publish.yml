@@ -195,7 +195,7 @@ jobs:
 
       - uses: Kir-Antipov/mc-publish@v3.3
         with:
-          curseforge-id: 1424812
+          curseforge-id: 1491935
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           files: |
