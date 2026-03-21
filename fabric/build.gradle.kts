@@ -1,8 +1,13 @@
+import com.google.gson.FormattingStyle
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import net.fabricmc.loom.configuration.ide.RunConfigSettings
 import org.jetbrains.annotations.Contract
+import java.nio.file.Paths
+import java.util.Properties
+import kotlin.io.path.div
 
 plugins {
     id("com.gradleup.shadow")
@@ -67,7 +72,7 @@ loom {
                 rootProject.layout.projectDirectory.file("docker.otel.properties")
             )
         })
-        /*create("clientGameTest", Action<RunConfigSettings> {
+        create("clientGameTest", Action<RunConfigSettings> {
             client()
             inherit(this@runs["client"])
             configName = "Minecraft Client + GameTest"
@@ -97,24 +102,24 @@ loom {
 
             this.property("fabric-api.gametest")
             runDir = "gameTestRun"
-        })*/
+        })
     }
 }
 
-//tasks["check"].dependsOn("runGameTestServer")
+tasks["check"].dependsOn("runGameTestServer")
 
 sourceSets {
     val main by getting
-    /*val commonGameTest = project(":common").sourceSets["gametest"]
+    val commonGameTest = project(":common").sourceSets["gametest"]
 
     val gametest by creating {
         compileClasspath += commonGameTest.output + commonGameTest.compileClasspath + main.output + main.compileClasspath
         val pathSep = File.separator
         val blacklistedSepName = "${pathSep}fabric${pathSep}build${pathSep}resources${pathSep}main"
-        runtimeClasspath += commonGameTest.output + /*commonGameTest.runtimeClasspath +*/ (main.output + main.runtimeClasspath).filter {
+        runtimeClasspath += commonGameTest.output + commonGameTest.runtimeClasspath + (main.output + main.runtimeClasspath).filter {
             !(it.path.endsWith("\\fabric\\build\\resources\\main") || it.path.endsWith(blacklistedSepName))
         }
-    }*/
+    }
 }
 
 val common: Configuration by configurations.creating {
@@ -232,7 +237,7 @@ components.getByName("java") {
     }
 }
 
-/*tasks.register("configureGameTestServer") {
+tasks.register("configureGameTestServer") {
     val serverProperties = mapOf(
         "enable-command-block" to "true",
         "level-type" to "minecraft:flat",
@@ -253,8 +258,9 @@ components.getByName("java") {
             properties.store(it, null)
         }
     }
-    tasks["runGameTestServer"].dependsOn(this)
-}*/
+}.let { 
+    tasks["runGameTestServer"].dependsOn(it)    
+}
 
 tasks.processResources {
     val commonProcessResources = project(":common").tasks.processResources.get()
@@ -263,7 +269,7 @@ tasks.processResources {
     from(commonProcessResources.destinationDir)
 }
 
-/*tasks.named<ProcessResources>("processGametestResources") {
+tasks.named<ProcessResources>("processGametestResources") {
     val resourcesTask = tasks.processResources.get()
     val commonGameTestResourcesTask = project(":common").tasks.getByName<ProcessResources>("processGametestResources")
     dependsOn(resourcesTask, commonGameTestResourcesTask)
@@ -287,7 +293,7 @@ tasks.processResources {
             gson.toJson(mergeJson(base, override)!!, writer)
         }
     }
-}*/
+}
 
 @Contract("null,null,_->null; !null,_,_->!null; _,!null,_->!null")
 fun mergeJson(base: JsonElement?, override: JsonElement?, path: String = "[root]"): JsonElement? {

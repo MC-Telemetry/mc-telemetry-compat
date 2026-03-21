@@ -9,10 +9,10 @@ loom {
 sourceSets {
     val main by getting
 
-/*    val gametest by creating {
+    val gametest by creating {
         compileClasspath += main.output + main.compileClasspath
         runtimeClasspath += main.output + main.runtimeClasspath
-    }*/
+    }
 }
 
 dependencies {

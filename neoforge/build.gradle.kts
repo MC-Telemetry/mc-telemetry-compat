@@ -1,4 +1,8 @@
 import net.fabricmc.loom.configuration.ide.RunConfigSettings
+import java.nio.file.Paths
+import java.util.Properties
+import kotlin.io.path.absolutePathString
+import kotlin.io.path.div
 
 plugins {
     id("com.gradleup.shadow")
@@ -20,7 +24,7 @@ loom {
         this.accessTransformer(project.layout.projectDirectory.file("src/main/resources/META-INF/accesstransformer.cfg"))
     }
     runs {
-/*        val gameTestModClassesEnvValue = run {
+        val gameTestModClassesEnvValue = run {
 
             val commonBuildClasses = project(":common").layout.buildDirectory.dir("classes").get().asFile.toPath()
             val neoforgeBuildClasses = project.layout.buildDirectory.dir("classes").get().asFile.toPath()
@@ -36,7 +40,7 @@ loom {
             ).joinToString(separator = File.pathSeparator) {
                 "gametest%%${it.absolutePathString()}"
             }
-        }*/
+        }
         named("server", Action<RunConfigSettings> {
             vmArg(
                 "-javaagent:${
@@ -71,7 +75,7 @@ loom {
                 rootProject.layout.projectDirectory.file("docker.otel.properties")
             )
         })
-        /*create("clientGameTest", Action<RunConfigSettings> {
+        create("clientGameTest", Action<RunConfigSettings> {
             client()
             inherit(this@runs["client"])
             configName = "Minecraft Client + GameTest"
@@ -107,15 +111,15 @@ loom {
             property("neoforge.enabledGameTestNamespaces", MOD_ID)
             property("neoforge.enableGameTest", "true")
             property("neoforge.gameTestServer", "true")
-        })*/
+        })
     }
 }
 
-//tasks["check"].dependsOn("runGameTestServer")
+tasks["check"].dependsOn("runGameTestServer")
 
 sourceSets {
     val main by getting
-    /*    val commonGameTest = project(":common").sourceSets["gametest"]
+        val commonGameTest = project(":common").sourceSets["gametest"]
 
         val gametest by creating {
             compileClasspath += commonGameTest.output + commonGameTest.compileClasspath + main.output + main.compileClasspath
@@ -124,7 +128,7 @@ sourceSets {
             runtimeClasspath += commonGameTest.output + /*commonGameTest.runtimeClasspath +*/ (main.output + main.runtimeClasspath).filter {
                 !(it.path.endsWith("\\neoforge\\build\\resources\\main") || it.path.endsWith(blacklistedSepName))
             }
-        }*/
+        }
 }
 
 val common: Configuration by configurations.creating {
@@ -273,7 +277,7 @@ components.getByName("java") {
     }
 }
 
-/*tasks.register("configureGameTestServer") {
+tasks.register("configureGameTestServer") {
     val serverProperties = mapOf(
         "enable-command-block" to "true",
         "level-type" to "minecraft:flat",
@@ -294,8 +298,9 @@ components.getByName("java") {
             properties.store(it, null)
         }
     }
-    tasks["runGameTestServer"].dependsOn(this)
-}*/
+}.let {
+    tasks["runGameTestServer"].dependsOn(it)
+}
 
 tasks.processResources {
     val commonProcessResources = project(":common").tasks.processResources.get()
@@ -304,7 +309,7 @@ tasks.processResources {
     from(commonProcessResources.destinationDir)
 }
 
-/*tasks.named<ProcessResources>("processGametestResources") {
+tasks.named<ProcessResources>("processGametestResources") {
     val resourcesTask = tasks.processResources.get()
     val commonGameTestResourcesTask = project(":common").tasks.getByName<ProcessResources>("processGametestResources")
     dependsOn(resourcesTask, commonGameTestResourcesTask)
@@ -314,4 +319,4 @@ tasks.processResources {
     from(resourcesTask.destinationDir)
 
     tasks["runGameTestServer"].dependsOn(this)
-}*/
+}
