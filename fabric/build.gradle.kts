@@ -116,7 +116,7 @@ sourceSets {
         compileClasspath += commonGameTest.output + commonGameTest.compileClasspath + main.output + main.compileClasspath
         val pathSep = File.separator
         val blacklistedSepName = "${pathSep}fabric${pathSep}build${pathSep}resources${pathSep}main"
-        runtimeClasspath += commonGameTest.output + commonGameTest.runtimeClasspath + (main.output + main.runtimeClasspath).filter {
+        runtimeClasspath += commonGameTest.output + /*commonGameTest.runtimeClasspath +*/ (main.output + main.runtimeClasspath).filter {
             !(it.path.endsWith("\\fabric\\build\\resources\\main") || it.path.endsWith(blacklistedSepName))
         }
     }
@@ -258,8 +258,8 @@ tasks.register("configureGameTestServer") {
             properties.store(it, null)
         }
     }
-}.let { 
-    tasks["runGameTestServer"].dependsOn(it)    
+}.let {
+    tasks["runGameTestServer"].dependsOn(it)
 }
 
 tasks.processResources {
