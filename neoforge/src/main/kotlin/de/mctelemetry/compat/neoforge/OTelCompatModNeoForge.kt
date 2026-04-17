@@ -4,8 +4,6 @@ import com.google.common.base.Supplier
 import de.mctelemetry.compat.OTelCompatMod
 import de.mctelemetry.compat.appliedenergistics2.AppliedEnergistics2ModRequired
 import de.mctelemetry.compat.appliedenergistics2.OTelCompatAppliedEnergistics2Content
-import de.mctelemetry.compat.attributes.OTelCompatAttributeKeyTypes
-import de.mctelemetry.compat.attributes.ResourceLocationAttributeKeyType
 import de.mctelemetry.compat.draconicevolution.DraconicEvolutionModRequired
 import de.mctelemetry.compat.draconicevolution.OTelCompatDraconicEvolutionContent
 import de.mctelemetry.core.api.OTelCoreModAPI
@@ -38,13 +36,6 @@ object OTelCompatModNeoForge {
         if (Platform.isModLoaded("ae2")) {
             @OptIn(AppliedEnergistics2ModRequired::class)
             OTelCompatAppliedEnergistics2Content.register(MOD_BUS)
-        }
-        MOD_BUS.addListener<RegisterEvent> { event ->
-            if(event.registryKey == OTelCoreModAPI.AttributeTypeMappings){
-                event.register(OTelCoreModAPI.AttributeTypeMappings) { helper ->
-                    helper.register(ResourceLocationAttributeKeyType.id, ResourceLocationAttributeKeyType)
-                }
-            }
         }
     }
 

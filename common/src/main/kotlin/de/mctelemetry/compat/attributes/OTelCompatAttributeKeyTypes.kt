@@ -14,8 +14,6 @@ object OTelCompatAttributeKeyTypes {
         OTelCoreModAPI.AttributeTypeMappings
     )
 
-    val RESOURCE_LOCATION_ATTRIBUTE_KEY_TYPE = registerAttributeKeyType("resource_location"){ResourceLocationAttributeKeyType}
-
     fun init() {
         ATTRIBUTE_KEY_TYPES.register()
     }

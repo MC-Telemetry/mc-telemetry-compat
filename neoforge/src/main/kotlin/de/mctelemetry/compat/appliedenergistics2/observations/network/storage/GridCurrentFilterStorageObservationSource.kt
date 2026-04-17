@@ -3,15 +3,14 @@ package de.mctelemetry.compat.appliedenergistics2.observations.network.storage
 import appeng.api.networking.IGridNode
 import appeng.api.stacks.AEKeyType
 import appeng.api.stacks.AEKeyTypes
-import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import de.mctelemetry.compat.OTelCompatMod
 import de.mctelemetry.compat.appliedenergistics2.AppliedEnergistics2ModRequired
 import de.mctelemetry.compat.appliedenergistics2.observations.network.GridObservationSourceBase
-import de.mctelemetry.compat.attributes.ResourceLocationAttributeKeyType
 import de.mctelemetry.core.api.OTelCoreModAPI
 import de.mctelemetry.core.api.attributes.AttributeDataSource
+import de.mctelemetry.core.api.attributes.BuiltinAttributeKeyTypes
 import de.mctelemetry.core.api.attributes.IAttributeValueStore
 import de.mctelemetry.core.api.observations.IObservationRecorder
 import de.mctelemetry.core.api.observations.IObservationSource
@@ -44,7 +43,7 @@ object GridCurrentFilterStorageObservationSource :
         argumentType = ResourceLocationArgument.id(),
     ) { type, _ -> require(AEKeyTypes.getAll().any { it.id == type }) { "Type must be any of [${AEKeyTypes.getAll().joinToString(", ")}]" } }
 
-    val observedKey = ResourceLocationAttributeKeyType.createObservationAttributeReference("key")
+    val observedKey = BuiltinAttributeKeyTypes.ResourceLocationType.createObservationAttributeReference("key")
 
     override val parameters: Map<String, IParameterizedObservationSource.Parameter<*>> =
         listOf(typeParameter).associateBy { it.name }
